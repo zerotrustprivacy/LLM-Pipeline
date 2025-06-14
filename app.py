@@ -14,9 +14,13 @@ load_dotenv()
 # Google Gemini
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 if gemini_api_key:
-    genai.configure(api_key=gemini_api_key)
-    llm_client = genai.GenerativeModel('gemini-pro')
-    print("Gemini client initialized.")
+    try:
+        genai.configure(api_key=gemini_api_key)
+        llm_client = genai.GenerativeModel('gemini-2.0-flash')
+        print("Gemini client initialized.")
+    except Exception as e:
+        llm_client = None
+        print(f"Errror initializing Gemini client: {e}")
 else:
     llm_client = None
     print("Warning: GEMINI_API_KEY not found. LLM client not initialized.")
