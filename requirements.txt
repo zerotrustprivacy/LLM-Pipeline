@@ -1,0 +1,6 @@
+Flask
+python-dotenv # For loading .env locally
+gunicorn # For production-ready serving
+# --- Choose your LLM client library ---
+# openai # For OpenAI
+google-generativeai # For Google Gemini
