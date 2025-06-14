@@ -1,8 +1,7 @@
 # LLM-Pipeline
 # CI/CD Pipeline for LLM-Powered Application on Google Cloud Run
 
-![CI/CD Pipeline Diagram Placeholder](https://via.placeholder.com/800x400?text=CI/CD+Pipeline+Diagram)
-*(Consider adding a simple diagram here later, showing GitHub -> GitHub Actions -> Artifact Registry -> Cloud Run)*
+<img src="GitHub Actions to Cloud Run Deployment Pipeline - visual selection.png">
 
 ## 🚀 Project Overview
 
