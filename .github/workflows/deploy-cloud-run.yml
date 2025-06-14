@@ -53,6 +53,5 @@ jobs:
             --region ${REGION} \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} # Pass LLM API key as environment variable
-            # --set-env-vars GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} # Use this for Gemini
+            --set-env-vars GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} # Use this for Gemini
             # Pass any other env vars your app needs
