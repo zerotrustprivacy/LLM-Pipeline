@@ -1,4 +1,74 @@
-gcloud artifacts repositories create llm-app-repo \
-  --repository-format=docker \
-  --location=us-central1 \
-  --description="Docker repository for LLM applications"            
+# app.py
+import os
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv # To load environment variables from .env file
+
+# --- LLM API Client Setup ---
+# Google Gemini (requires google-generativeai library)
+import google.generativeai as genai
+
+# Load environment variables (for local testing, .env file)
+load_dotenv() 
+
+# --- Initialize LLM Client ---
+# Google Gemini
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+if gemini_api_key:
+     genai.configure(api_key=gemini_api_key)
+     llm_client = genai.GenerativeModel('gemini-pro') # Or other model
+     print("Gemini client initialized.")
+ else:
+     llm_client = None
+     print("Warning: GEMINI_API_KEY not found. LLM client not initialized.")
+
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "LLM API is running! Use /generate to get a response."
+
+@app.route('/generate', methods=['POST'])
+def generate_text():
+    if llm_client is None:
+        return jsonify({"error": "LLM API key not configured."}), 500
+
+    try:
+        data = request.get_json(force=True)
+        prompt = data.get('prompt')
+
+        if not prompt:
+            return jsonify({"error": "Prompt is required."}), 400
+
+        print(f"Received prompt: {prompt}")
+
+        # --- Call LLM API ---
+        # Option 1: OpenAI
+        response = llm_client.chat.completions.create(
+            model="gpt-3.5-turbo", # Or "gpt-4"
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=100
+        )
+        generated_text = response.choices[0].message.content
+
+        # Option 2: Google Gemini
+        # response = llm_client.generate_content(prompt, generation_config={"max_output_tokens": 100})
+        # generated_text = response.text
+
+        return jsonify({"generated_text": generated_text})
+
+    except Exception as e:
+        print(f"Error during generation: {e}")
+        return jsonify({"error": str(e), "message": "Failed to generate text."}), 500
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy'}), 200
+
+if __name__ == '__main__':
+    # When running locally, Flask uses port 5000 by default.
+    # Cloud Run will set the PORT environment variable.
+    port = int(os.environ.get('PORT', 8080)) # Default to 8080 for Cloud Run, but Flask uses 5000 if not set
+    app.run(host='0.0.0.0', port=port)
