@@ -27,15 +27,14 @@ jobs:
       - name: Set up Cloud SDK
         uses: 'google-github-actions/auth@v2.1.10'
         with:
-          service_account: '...' # my-service-account@my-project.iam.gserviceaccount.com
-          workload_identity_provider: '...' # "projects/123456789/locations/global/workloadIdentityPools/github/providers/my-repo"
+          service_account: ${{ secrets.SERVICE_ACCOUNT }} # my-service-account@my-project.iam.gserviceaccount.com
           project_id: ${{ env.PROJECT_ID }}
           # Use Workload Identity Federation for secure authentication
           # You need to configure this in GCP first.
           # See https://github.com/google-github-actions/auth#setting-up-workload-identity-federation
           # OR for simplicity during initial setup, you could use a service account key JSON 
           # (NOT RECOMMENDED FOR PRODUCTION, but simpler for learning)
-          # credentials_json: ${{ secrets.GCP_CREDENTIALS }} 
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }} 
 
       - name: Authenticate Docker to Artifact Registry
         run: |
