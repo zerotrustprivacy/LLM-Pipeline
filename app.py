@@ -8,18 +8,18 @@ from dotenv import load_dotenv # To load environment variables from .env file
 import google.generativeai as genai
 
 # Load environment variables (for local testing, .env file)
-load_dotenv() 
+load_dotenv()
 
 # --- Initialize LLM Client ---
 # Google Gemini
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 if gemini_api_key:
-     genai.configure(api_key=gemini_api_key)
-     llm_client = genai.GenerativeModel('gemini-pro') # Or other model
-     print("Gemini client initialized.")
+    genai.configure(api_key=gemini_api_key)
+    llm_client = genai.GenerativeModel('gemini-pro') # Or other model
+    print("Gemini client initialized.")
 else:
-     llm_client = None
-     print("Warning: GEMINI_API_KEY not found. LLM client not initialized.")
+    llm_client = None
+    print("Warning: GEMINI_API_KEY not found. LLM client not initialized.")
 
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def home():
 @app.route('/generate', methods=['POST'])
 def generate_text():
     if llm_client is None:
-        return jsonify({"error": "LLM API key not configured."}), 500
+       return jsonify({"error": "LLM API key not configured."}), 500
 
     try:
         data = request.get_json(force=True)
