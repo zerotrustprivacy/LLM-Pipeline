@@ -1,21 +1,21 @@
 # app.py
 import os
 from flask import Flask, request, jsonify
-from dotenv import load_dotenv # To load environment variables from .env file
+from dotenv import load_dotenv 
 
 # --- LLM API Client Setup ---
 # Google Gemini (requires google-generativeai library)
 import google.generativeai as genai
 
 # Load environment variables (for local testing, .env file)
-load_dotenv()
+load_dotenv() 
 
 # --- Initialize LLM Client ---
 # Google Gemini
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 if gemini_api_key:
-    genai.configure(api_key=gemini_api_key)
-    llm_client = genai.GenerativeModel('gemini-pro') # Or other model
+    genai.configure(api_key=gemini_api_key) 
+    llm_client = genai.GenerativeModel('gemini-pro') 
     print("Gemini client initialized.")
 else:
     llm_client = None
@@ -31,7 +31,7 @@ def home():
 @app.route('/generate', methods=['POST'])
 def generate_text():
     if llm_client is None:
-       return jsonify({"error": "LLM API key not configured."}), 500
+        return jsonify({"error": "LLM API key not configured."}), 500
 
     try:
         data = request.get_json(force=True)
@@ -58,7 +58,5 @@ def health_check():
     return jsonify({'status': 'healthy'}), 200
 
 if __name__ == '__main__':
-    # When running locally, Flask uses port 5000 by default.
-    # Cloud Run will set the PORT environment variable.
-    port = int(os.environ.get('PORT', 8080)) # Default to 8080 for Cloud Run, but Flask uses 5000 if not set
+    port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
