@@ -17,7 +17,7 @@ if gemini_api_key:
      genai.configure(api_key=gemini_api_key)
      llm_client = genai.GenerativeModel('gemini-pro') # Or other model
      print("Gemini client initialized.")
- else:
+else:
      llm_client = None
      print("Warning: GEMINI_API_KEY not found. LLM client not initialized.")
 
