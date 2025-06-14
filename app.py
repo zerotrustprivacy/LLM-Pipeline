@@ -43,19 +43,9 @@ def generate_text():
         print(f"Received prompt: {prompt}")
 
         # --- Call LLM API ---
-        # Option 1: OpenAI
-        response = llm_client.chat.completions.create(
-            model="gpt-3.5-turbo", # Or "gpt-4"
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=100
-        )
-        generated_text = response.choices[0].message.content
-
-        # Option 2: Google Gemini
-        # response = llm_client.generate_content(prompt, generation_config={"max_output_tokens": 100})
-        # generated_text = response.text
+        # Google Gemini
+        response = llm_client.generate_content(prompt, generation_config={"max_output_tokens": 100})
+        generated_text = response.text
 
         return jsonify({"generated_text": generated_text})
 
