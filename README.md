@@ -56,8 +56,7 @@ Clone this repository and set up the basic Flask application.
 
 ```bash
 # Clone the repository
-git clone [https://github.com/YOUR_GITHUB_USERNAME/llm-cicd-demo.git](https://github.com/YOUR_GITHUB_USERNAME/llm-cicd-demo.git)
-cd llm-cicd-demo
+git clone [https://github.com/zerotrustprivacy/llm-pipeline.git](https://github.com/zerotrustprivacy/llm-pipeline.git)
 
 # Create a Python virtual environment
 python -m venv venv
